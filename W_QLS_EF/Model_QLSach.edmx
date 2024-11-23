@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QLSach_HDTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CT_HOADON">
+          <Key>
+            <PropertyRef Name="MAHD" />
+            <PropertyRef Name="MASACH" />
+          </Key>
+          <Property Name="MAHD" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="MASACH" Type="int" Nullable="false" />
+          <Property Name="SOLUONG" Type="int" />
+        </EntityType>
+        <EntityType Name="DauSach">
+          <Key>
+            <PropertyRef Name="Masach" />
+          </Key>
+          <Property Name="Masach" Type="int" Nullable="false" />
+          <Property Name="TuaSach" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TacGia" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MaLoai" Type="int" />
+          <Property Name="NgayXuatBan" Type="date" />
+          <Property Name="SoLuong" Type="int" />
+          <Property Name="DonGia" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="HOADON">
+          <Key>
+            <PropertyRef Name="MAHD" />
+          </Key>
+          <Property Name="MAHD" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="NGAYHD" Type="datetime" />
+        </EntityType>
+        <EntityType Name="LoaiSach">
+          <Key>
+            <PropertyRef Name="MaLoai" />
+          </Key>
+          <Property Name="MaLoai" Type="int" Nullable="false" />
+          <Property Name="TenLoai" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="DS_fk_maloai">
+          <End Role="LoaiSach" Type="Self.LoaiSach" Multiplicity="0..1" />
+          <End Role="DauSach" Type="Self.DauSach" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoaiSach">
+              <PropertyRef Name="MaLoai" />
+            </Principal>
+            <Dependent Role="DauSach">
+              <PropertyRef Name="MaLoai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CT_HD">
+          <End Role="HOADON" Type="Self.HOADON" Multiplicity="1" />
+          <End Role="CT_HOADON" Type="Self.CT_HOADON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HOADON">
+              <PropertyRef Name="MAHD" />
+            </Principal>
+            <Dependent Role="CT_HOADON">
+              <PropertyRef Name="MAHD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_masach">
+          <End Role="DauSach" Type="Self.DauSach" Multiplicity="1" />
+          <End Role="CT_HOADON" Type="Self.CT_HOADON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DauSach">
+              <PropertyRef Name="Masach" />
+            </Principal>
+            <Dependent Role="CT_HOADON">
+              <PropertyRef Name="MASACH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLSach_HDTModelStoreContainer">
+          <EntitySet Name="CT_HOADON" EntityType="Self.CT_HOADON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DauSach" EntityType="Self.DauSach" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HOADON" EntityType="Self.HOADON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoaiSach" EntityType="Self.LoaiSach" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="DS_fk_maloai" Association="Self.DS_fk_maloai">
+            <End Role="LoaiSach" EntitySet="LoaiSach" />
+            <End Role="DauSach" EntitySet="DauSach" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CT_HD" Association="Self.FK_CT_HD">
+            <End Role="HOADON" EntitySet="HOADON" />
+            <End Role="CT_HOADON" EntitySet="CT_HOADON" />
+          </AssociationSet>
+          <AssociationSet Name="fk_masach" Association="Self.fk_masach">
+            <End Role="DauSach" EntitySet="DauSach" />
+            <End Role="CT_HOADON" EntitySet="CT_HOADON" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLSach_HDTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CT_HOADON">
+          <Key>
+            <PropertyRef Name="MAHD" />
+            <PropertyRef Name="MASACH" />
+          </Key>
+          <Property Name="MAHD" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="MASACH" Type="Int32" Nullable="false" />
+          <Property Name="SOLUONG" Type="Int32" />
+          <NavigationProperty Name="HOADON" Relationship="Self.FK_CT_HD" FromRole="CT_HOADON" ToRole="HOADON" />
+          <NavigationProperty Name="DauSach" Relationship="Self.fk_masach" FromRole="CT_HOADON" ToRole="DauSach" />
+        </EntityType>
+        <EntityType Name="DauSach">
+          <Key>
+            <PropertyRef Name="Masach" />
+          </Key>
+          <Property Name="Masach" Type="Int32" Nullable="false" />
+          <Property Name="TuaSach" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TacGia" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaLoai" Type="Int32" />
+          <Property Name="NgayXuatBan" Type="DateTime" Precision="0" />
+          <Property Name="SoLuong" Type="Int32" />
+          <Property Name="DonGia" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="CT_HOADON" Relationship="Self.fk_masach" FromRole="DauSach" ToRole="CT_HOADON" />
+          <NavigationProperty Name="LoaiSach" Relationship="Self.DS_fk_maloai" FromRole="DauSach" ToRole="LoaiSach" />
+        </EntityType>
+        <EntityType Name="HOADON">
+          <Key>
+            <PropertyRef Name="MAHD" />
+          </Key>
+          <Property Name="MAHD" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="NGAYHD" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CT_HOADON" Relationship="Self.FK_CT_HD" FromRole="HOADON" ToRole="CT_HOADON" />
+        </EntityType>
+        <EntityType Name="LoaiSach">
+          <Key>
+            <PropertyRef Name="MaLoai" />
+          </Key>
+          <Property Name="MaLoai" Type="Int32" Nullable="false" />
+          <Property Name="TenLoai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DauSaches" Relationship="Self.DS_fk_maloai" FromRole="LoaiSach" ToRole="DauSach" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_CT_HD">
+          <End Role="HOADON" Type="Self.HOADON" Multiplicity="1" />
+          <End Role="CT_HOADON" Type="Self.CT_HOADON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HOADON">
+              <PropertyRef Name="MAHD" />
+            </Principal>
+            <Dependent Role="CT_HOADON">
+              <PropertyRef Name="MAHD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_masach">
+          <End Role="DauSach" Type="Self.DauSach" Multiplicity="1" />
+          <End Role="CT_HOADON" Type="Self.CT_HOADON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DauSach">
+              <PropertyRef Name="Masach" />
+            </Principal>
+            <Dependent Role="CT_HOADON">
+              <PropertyRef Name="MASACH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DS_fk_maloai">
+          <End Role="LoaiSach" Type="Self.LoaiSach" Multiplicity="0..1" />
+          <End Role="DauSach" Type="Self.DauSach" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoaiSach">
+              <PropertyRef Name="MaLoai" />
+            </Principal>
+            <Dependent Role="DauSach">
+              <PropertyRef Name="MaLoai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLSach_HDTEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CT_HOADON" EntityType="Self.CT_HOADON" />
+          <EntitySet Name="DauSaches" EntityType="Self.DauSach" />
+          <EntitySet Name="HOADONs" EntityType="Self.HOADON" />
+          <EntitySet Name="LoaiSaches" EntityType="Self.LoaiSach" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_CT_HD" Association="Self.FK_CT_HD">
+            <End Role="HOADON" EntitySet="HOADONs" />
+            <End Role="CT_HOADON" EntitySet="CT_HOADON" />
+          </AssociationSet>
+          <AssociationSet Name="fk_masach" Association="Self.fk_masach">
+            <End Role="DauSach" EntitySet="DauSaches" />
+            <End Role="CT_HOADON" EntitySet="CT_HOADON" />
+          </AssociationSet>
+          <AssociationSet Name="DS_fk_maloai" Association="Self.DS_fk_maloai">
+            <End Role="LoaiSach" EntitySet="LoaiSaches" />
+            <End Role="DauSach" EntitySet="DauSaches" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLSach_HDTModelStoreContainer" CdmEntityContainer="QLSach_HDTEntities">
+          <EntitySetMapping Name="CT_HOADON">
+            <EntityTypeMapping TypeName="QLSach_HDTModel.CT_HOADON">
+              <MappingFragment StoreEntitySet="CT_HOADON">
+                <ScalarProperty Name="MAHD" ColumnName="MAHD" />
+                <ScalarProperty Name="MASACH" ColumnName="MASACH" />
+                <ScalarProperty Name="SOLUONG" ColumnName="SOLUONG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DauSaches">
+            <EntityTypeMapping TypeName="QLSach_HDTModel.DauSach">
+              <MappingFragment StoreEntitySet="DauSach">
+                <ScalarProperty Name="Masach" ColumnName="Masach" />
+                <ScalarProperty Name="TuaSach" ColumnName="TuaSach" />
+                <ScalarProperty Name="TacGia" ColumnName="TacGia" />
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="NgayXuatBan" ColumnName="NgayXuatBan" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="DonGia" ColumnName="DonGia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HOADONs">
+            <EntityTypeMapping TypeName="QLSach_HDTModel.HOADON">
+              <MappingFragment StoreEntitySet="HOADON">
+                <ScalarProperty Name="MAHD" ColumnName="MAHD" />
+                <ScalarProperty Name="NGAYHD" ColumnName="NGAYHD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoaiSaches">
+            <EntityTypeMapping TypeName="QLSach_HDTModel.LoaiSach">
+              <MappingFragment StoreEntitySet="LoaiSach">
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="TenLoai" ColumnName="TenLoai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="QLSach_HDTModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
